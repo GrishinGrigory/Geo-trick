@@ -71,9 +71,14 @@ Rows are skipped only if they are invalid, for example:
 
 Skipped records are exported to the `Skipped_Rows` sheet with a reason for exclusion.
 
+## How to use
+In .py file change the constants in rows 159 and 160 with your data
+
 ## Requirements
 
 Install the required packages:
 
 ```bash
 pip install pandas openpyxl numpy
+
+
