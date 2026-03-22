@@ -18,11 +18,11 @@ def normalize_lith_intervals(
     required_cols = [bhid_col, from_col, to_col, lith_col]
     missing = [c for c in required_cols if c not in df.columns]
     if missing:
-        raise ValueError(f"В таблице отсутствуют обязательные столбцы: {missing}")
+        raise ValueError(f"Table missing necessary columns : {missing}")
 
     work = df.copy()
     work["_row_order"] = np.arange(len(work))
-    work["_excel_row"] = np.arange(2, len(work) + 2)  # номер строки Excel, если заголовок в 1-й строке
+    work["_excel_row"] = np.arange(2, len(work) + 2)  # number of Excel start row, if headline in 1 row
 
     work[from_col] = pd.to_numeric(work[from_col], errors="coerce")
     work[to_col] = pd.to_numeric(work[to_col], errors="coerce")
@@ -54,7 +54,7 @@ def normalize_lith_intervals(
     work = work.loc[~invalid_mask].copy()
 
     if work.empty:
-        raise ValueError("После фильтрации не осталось корректных интервалов.")
+        raise ValueError("After filtering, there were no valid intervals left.")
 
     work.sort_values([bhid_col, "_row_order"], kind="stable", inplace=True)
 
@@ -105,7 +105,7 @@ def normalize_lith_intervals(
             output_records.append(rec)
 
     if not output_records:
-        raise ValueError("Не удалось сформировать выходные интервалы.")
+        raise ValueError("Failed to generate output intervals.")
 
     out = pd.DataFrame(output_records)
 
@@ -132,7 +132,7 @@ def process_excel_file(
     input_file = Path(input_file)
 
     if not input_file.exists():
-        raise FileNotFoundError(f"Файл не найден: {input_file}")
+        raise FileNotFoundError(f"File not found: {input_file}")
 
     df = pd.read_excel(input_file, sheet_name=input_sheet)
     result, skipped = normalize_lith_intervals(df)
@@ -156,8 +156,8 @@ def process_excel_file(
 
 
 if __name__ == "__main__":
-    input_path = r"C:\Users\1\Documents\TEST.xlsx"
-    input_sheet_name = "LITH"
+    input_path = r"C:\Users\....\Documents\TEST.xlsx" # the path to the file what need to be fixed
+    input_sheet_name = "LITH" # Name of sheet 
 
     saved_file = process_excel_file(
         input_file=input_path,
@@ -166,4 +166,4 @@ if __name__ == "__main__":
         output_sheet="Sequential_Lith",
     )
 
-    print(f"Готово. Результат сохранен в файл: {saved_file}")
+    print(f"Done. The result has been saved to file: {saved_file}")
